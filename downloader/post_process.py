@@ -2,8 +2,6 @@
 import os
 import subprocess
 
-clean_dir = '.'
-
 
 def _get_wsl(cmd):
     if os.name == 'nt':
@@ -13,21 +11,21 @@ def _get_wsl(cmd):
     return process_cmd + cmd
 
 
-def _clean_fdupes():
+def _clean_fdupes(folder="."):
     print(subprocess.check_output(
-        _get_wsl(["fdupes", "-Srd", "--noprompt", clean_dir])
+        _get_wsl(["fdupes", "-Srd", "--noprompt", folder])
     ))
 
 
-def _clean_empty_folders():
+def _clean_empty_folders(folder="."):
     print(subprocess.check_output(
-        _get_wsl(["find", clean_dir, "-type", "d", "-empty"])
+        _get_wsl(["find", folder, "-type", "d", "-empty"])
     ))
     print(subprocess.check_output(
-        _get_wsl(["find", clean_dir, "-type", "d", "-empty", "-delete"])
+        _get_wsl(["find", folder, "-type", "d", "-empty", "-delete"])
     ))
 
 
-def cleanup():
-    _clean_fdupes()
-    _clean_empty_folders()
+def cleanup(folder="."):
+    _clean_fdupes(folder)
+    _clean_empty_folders(folder)

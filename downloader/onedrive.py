@@ -25,7 +25,7 @@ def _get_driveitem(link, base_url="https://api.onedrive.com/v1.0/shares/"):
     return response.json()
 
 
-def _get_download_item(driveItem, folder="."):
+def _get_download_item(driveItem, folder=""):
     logger.debug("Adding " + driveItem["name"])
     return {
         "fdir": folder,
@@ -34,7 +34,7 @@ def _get_download_item(driveItem, folder="."):
     }
 
 
-def _get_content(link, folder="."):
+def _get_content(link, folder=""):
     driveItem = _get_driveitem(link)
     contents = []
     children = []
@@ -64,8 +64,7 @@ def _download(link):
         logger.debug("Downloading " + str(item))
         download.download(
             url=item["downloadUrl"],
-            fname=item["fname"],
-            target_dir=item["fdir"]
+            fname=os.path.join(item["fdir"], item["fname"])
         )
 
 
