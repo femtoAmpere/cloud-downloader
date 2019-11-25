@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 from downloader import download, post_process
 
 if not os.path.isfile('downloader.log'): open('downloader.log', 'a+').close()
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s *%(levelname)s* %(name)s in %(filename)s.%(funcName)s: %(message)s',
                     handlers=[logging.FileHandler('downloader.log', mode='a'), logging.StreamHandler()])
 
