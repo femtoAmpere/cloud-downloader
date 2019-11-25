@@ -9,6 +9,7 @@ import urllib
 import re
 
 from downloader import url_patterns
+from downloader import dropbox, googledrive, mega, onedrive, yandisk
 from zipfile import ZipFile
 import patoolib
 
@@ -16,10 +17,15 @@ logger = logging.getLogger('file handling')
 
 
 def get_soups(soup):
+    print('Downloading Dropbox links..')
     dropbox.get_soup(soup)
+    print('Downloading Google Drive links..')
     googledrive.get_soup(soup)
+    print('Downloading mega.nz links..')
     mega.get_soup(soup)
+    #print('Downloading Dropbox links..')
     # onedrive.get_soup(soup)
+    print('Downloading Yandex links..')
     yandisk.get_soup(soup)
 
 
