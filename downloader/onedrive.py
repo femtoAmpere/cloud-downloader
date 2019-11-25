@@ -58,7 +58,7 @@ def _get_content(link, folder=""):
     return contents, children
 
 
-def _download(link):
+def get_link(link):
     content = _get_content(link)[0]
     for item in content:
         logger.debug("Downloading " + str(item))
@@ -79,4 +79,4 @@ def get_soup(soup):
     links = list(dict.fromkeys(links))
     logger.debug('Found onedrive links: ' + str(links))
     for link in links:
-        _download(link)
+        get_link(link)

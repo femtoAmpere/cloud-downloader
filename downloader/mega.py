@@ -9,7 +9,7 @@ from downloader import download, url_patterns
 logger = logging.getLogger('mega')
 
 
-def _download(link):
+def get_link(link):
     link = link.replace('http://https://', 'https://', 1)
     try:
         # print(['wsl', 'megadl', link])
@@ -36,4 +36,4 @@ def get_soup(soup):
     links = list(dict.fromkeys(links))
     logger.debug('Found MEGA links: ' + str(links))
     for link in links:
-        _download(link)
+        get_link(link)

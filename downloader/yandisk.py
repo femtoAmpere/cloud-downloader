@@ -37,6 +37,10 @@ def download_yadisk_link(sharing_link, filename=None):
         print('Failed to download "{}"'.format(sharing_link))
 
 
+def get_link(link):
+    download.download(_get_real_direct_link(link))
+
+
 # Get all links to Yandex (Yandisk, yadi.sk) and save them to a file.
 def get_soup(soup):
     logger.debug('Getting Yandi.sk links..')
