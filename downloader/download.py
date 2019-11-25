@@ -23,24 +23,24 @@ def get_soups(soup):
     googledrive.get_soup(soup)
     print('Downloading mega.nz links..')
     mega.get_soup(soup)
-    #print('Downloading Dropbox links..')
-    # onedrive.get_soup(soup)
+    print('Downloading Dropbox links..')
+    onedrive.get_soup(soup)
     print('Downloading Yandex links..')
     yandisk.get_soup(soup)
 
 
 # Number the filename if it exists already.
-def rotate_name(filename):
+def rotate_name(filename, target_dir="."):
     n = 1
-    while filename in os.listdir('.'):
+    while filename in os.listdir(target_dir):
         fname, ext = os.path.splitext(filename)
         fname = fname + "_{}".format(n)
         if ext:
             fname = fname + ext
-        if fname not in os.listdir('.'):
-            return fname
+        if fname not in os.listdir(target_dir):
+            return os.path.join(target_dir, fname)
         n += 1
-    return filename
+    return os.path.join(target_dir, filename)
 
 
 # unzip/unrar files
@@ -64,7 +64,7 @@ def unpack(filename, remove_file=False):
         send2trash(filename)
 
 
-def get_filename(response, fname=None):
+def get_filename(response, fname=None, target_dir="."):
     logger.debug("Content disposition: " + str(response.headers["content-disposition"]))
     if not fname:
         try:
@@ -81,20 +81,23 @@ def get_filename(response, fname=None):
     if not fname:
         logger.warning("Could not get filename from html headers. Using fallback..")
         fname = "file.ext"
-    logger.debug('Found filename ' + fname)
-    return rotate_name(fname)
+    fname = rotate_name(fname, target_dir=target_dir)
+    logger.debug('Using filename ' + fname)
+    return fname
 
 
 # Download a file with automatic naming.
-def download(url):
-    url = str(url).replace('http://https://', 'https://', 1)  # http://https:// sometimes seems to happen?
+def download(url, fname=None, target_dir="."):
     try:
+        url = str(url).replace('http://https://', 'https://', 1)  # http://https:// sometimes seems to happen?
         response = requests.get(url, allow_redirects=True)
     except:
         log_failed_download(url)
         return False
-    fname = get_filename(response)
-    logger.info('Downloading ' + url + ' to ./' + fname)
+    if not os.path.isdir(target_dir):
+        os.mkdir(target_dir)
+    fname = get_filename(response, fname=fname, target_dir=target_dir)
+    logger.info('Downloading ' + url + ' to ' + fname)
     with open(fname, 'wb') as f:
         f.write(response.content)
         f.close()

@@ -1,0 +1,5 @@
+patool
+pyunpack
+Send2Trash3k
+requests==2.21.0
+beautifulsoup4==4.7.1
