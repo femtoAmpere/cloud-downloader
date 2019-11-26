@@ -17,12 +17,12 @@ logger = logging.getLogger('file handling')
 
 
 def get_soups(soup):
+    logger.info('Downloading mega.nz links..')
+    mega.get_soup(soup)
     logger.info('Downloading Dropbox links..')
     dropbox.get_soup(soup)
     logger.info('Downloading Google Drive links..')
     googledrive.get_soup(soup)
-    logger.info('Downloading mega.nz links..')
-    mega.get_soup(soup)
     logger.info('Downloading OneDrive links..')
     onedrive.get_soup(soup)
     logger.info('Downloading Yandex links..')
@@ -54,13 +54,19 @@ def unpack(filename, remove_file=False):
     extract_dir = rotate_name(fname)
     extracted = False
     if ext == ".zip":
-        with ZipFile(filename, 'r') as zf:
-            zf.extractall(path=extract_dir)
-            zf.close()
-        extracted = True
+        try:
+            with ZipFile(filename, 'r') as zf:
+                zf.extractall(path=extract_dir)
+                zf.close()
+            extracted = True
+        except Exception as e:
+            logger.error(e)
     elif ext in [".rar", ".7z"]:  # requires to have 7zip installed
-        patoolib.extract_archive(filename, outdir=extract_dir)
-        extracted = True
+        try:
+            patoolib.extract_archive(filename, outdir=extract_dir)
+            extracted = True
+        except Exception as e:
+            logger.error(e)
     if remove_file and extracted:
         # os.remove(filename)
         send2trash(filename)
