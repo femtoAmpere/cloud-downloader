@@ -17,7 +17,7 @@ def _get_id(link_id):
     for i in range(0, len(linkparts)):
         if linkparts[i] == "1drv.ms" and len(linkparts[i+1]) == 1:
             return linkparts[i+2].rsplit("?", 1)[0]  # id from link
-    return False  # no id found
+    return ""  # no id found
 
 
 def _get_driveitem(link, base_url="https://api.onedrive.com/v1.0/shares/"):
@@ -70,7 +70,6 @@ def get_link(link):
 
 # Get all links to MS OneDrive and save them to a text file.
 def get_soup(soup):
-    print('Getting OneDrive links..')
     links = []
     for link in soup.findAll('a'):
         this_link = link.get('href')

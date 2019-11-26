@@ -14,7 +14,7 @@ def get_link(link):
     try:
         # print(['wsl', 'megadl', link])
         raw_output = subprocess.check_output(['wsl', 'megadl', link]).decode("utf8")
-        output_file = ''.join(e for e in raw_output.split("Downloaded ")[1] if ord(e) >= 32 and ord(e) <= 122 )# e.isalnum() or ord(e) == 46 or )
+        output_file = ''.join(e for e in raw_output.split("Downloaded ")[1] if 32 <= ord(e) <= 122)# e.isalnum() or ord(e) == 46 or )
         logger.debug('Received MEGA file ' + output_file)
         fname, ext = os.path.splitext(output_file)
         new_output_file = fname + '_' + str(datetime.datetime.now().strftime("%Y-%m-%d__%H_%M_%S_%f")) + ext

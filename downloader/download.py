@@ -15,6 +15,7 @@ import patoolib
 
 logger = logging.getLogger('file handling')
 
+
 def get_soups(soup):
     logger.info('Downloading Dropbox links..')
     dropbox.get_soup(soup)
@@ -22,27 +23,28 @@ def get_soups(soup):
     googledrive.get_soup(soup)
     logger.info('Downloading mega.nz links..')
     mega.get_soup(soup)
-    logger.info('Downloading Dropbox links..')
+    logger.info('Downloading OneDrive links..')
     onedrive.get_soup(soup)
     logger.info('Downloading Yandex links..')
     yandisk.get_soup(soup)
 
 
+def _append_num(filename, num):
+    fname, ext = os.path.splitext(filename)
+    return fname + "_" + str(num) + ext
+
+
 # Number the filename if it exists already.
 def rotate_name(filename):
     n = 1
+    fname = filename
+    while os.path.exists(fname):
+        fname = _append_num(filename, n)
+        n += 1
     folder = os.path.dirname(os.path.join(".", filename))
     if not os.path.isdir(folder):
         os.makedirs(folder)
-    while filename in os.listdir(folder):
-        fname, ext = os.path.splitext(filename)
-        fname = fname + "_{}".format(n)
-        if ext:
-            fname = fname + ext
-        if fname not in os.listdir(folder):
-            return fname
-        n += 1
-    return filename
+    return fname
 
 
 # unzip/unrar files
@@ -52,13 +54,11 @@ def unpack(filename, remove_file=False):
     extract_dir = rotate_name(fname)
     extracted = False
     if ext == ".zip":
-        os.mkdir(extract_dir)
         with ZipFile(filename, 'r') as zf:
             zf.extractall(path=extract_dir)
             zf.close()
         extracted = True
     elif ext in [".rar", ".7z"]:  # requires to have 7zip installed
-        os.mkdir(extract_dir)
         patoolib.extract_archive(filename, outdir=extract_dir)
         extracted = True
     if remove_file and extracted:
@@ -67,7 +67,6 @@ def unpack(filename, remove_file=False):
 
 
 def get_filename(response, fname=None):
-    logger.debug("Content disposition: " + str(response.headers["content-disposition"]))
     if not fname:
         try:
             fname = urllib.parse.unquote(

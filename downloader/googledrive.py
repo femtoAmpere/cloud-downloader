@@ -46,7 +46,10 @@ def download_file_from_google_drive(id):
 
 
 def _get_id(link):
-    return link.split('/')[5]
+    if "open?id=" in link:  # link looks like https://drive.google.com/open?id={ID}
+        return link.split('?id=', 1)[1]
+    else:  # link looks like https://drive.google.com/file/d/{}/view?usp=sharing
+        return link.split('/')[5]
 
 
 # Get all links to Google Drive and try to download them.
