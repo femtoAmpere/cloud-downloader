@@ -5,6 +5,7 @@ import subprocess
 
 logger = logging.getLogger("post-process")
 
+
 def _get_os(cmd):
     if os.name == 'nt':
         process_cmd = ['wsl']
