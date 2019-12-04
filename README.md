@@ -16,14 +16,14 @@ python main.py {link1} {page1} {link2} {...}
 ```
 pip install -r requirements.txt
 ```
-**Linux** 
+**Linux** (optional)
 * _**fdupes** Used for cleanup after downloading._
 * _**megatools**(megadl) Downloads files from mega.nz._
 * _**p7zip-full** Python patoolib uses 7zip._
 ```
 apt install fdupes megatools p7zip-full
 ```
-**Windows**
+**Windows** (optional)
 * _**Subsystem for Linux** Executing the shell commands on Windows._
 * _**7zip** Python patoolib uses 7zip._
 ```
