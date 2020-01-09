@@ -23,14 +23,19 @@ logging.basicConfig(level=logging.INFO,
 if __name__ == '__main__':
     for dl in sys.argv[1:]:
         if any(h in str(dl).lower() for h in url_patterns.dropbox):  # is link
+            logging.debug("Downloading from Dropbox!")
             dropbox.get_link(dl)
         elif any(h in str(dl).lower() for h in url_patterns.googledrive):
+            logging.debug("Downloading from Google Drive!")
             googledrive.get_link(dl)
         elif any(h in str(dl).lower() for h in url_patterns.mega):
+            logging.debug("Downloading from mega.nz!")
             mega.get_link(dl)
         elif any(h in str(dl).lower() for h in url_patterns.onedrive):
+            logging.debug("Downloading from OneDrive!")
             onedrive.get_link(dl)
         elif any(h in str(dl).lower() for h in url_patterns.yandisk):
+            logging.debug("Downloading from Yandisk!")
             yandisk.get_link(dl)
         else:  # is web page
             response = requests.get(sys.argv[1])
