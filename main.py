@@ -2,7 +2,7 @@
 
 """
 cloud downloader by femtoAmpere
-    2019
+    2019-2020
 """
 
 import sys
@@ -12,8 +12,8 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 
-from downloader import download, post_process, url_patterns
-from downloader import dropbox, googledrive, mega, onedrive, yandisk
+from downloader import download, post_process
+from downloader import discord, dropbox, googledrive, mega, onedrive, yandisk
 
 if not os.path.isfile('downloader.log'): open('downloader.log', 'a+').close()
 logging.basicConfig(level=logging.INFO,
@@ -22,19 +22,22 @@ logging.basicConfig(level=logging.INFO,
 
 if __name__ == '__main__':
     for dl in sys.argv[1:]:
-        if any(h in str(dl).lower() for h in url_patterns.dropbox):  # is link
+        if any(h in str(dl).lower() for h in discord.url_patterns):  # is link
+            logging.debug("Downloading from Discord!")
+            discord.get_link(dl)
+        elif any(h in str(dl).lower() for h in dropbox.url_patterns):  # is link
             logging.debug("Downloading from Dropbox!")
             dropbox.get_link(dl)
-        elif any(h in str(dl).lower() for h in url_patterns.googledrive):
+        elif any(h in str(dl).lower() for h in googledrive.url_patterns):
             logging.debug("Downloading from Google Drive!")
             googledrive.get_link(dl)
-        elif any(h in str(dl).lower() for h in url_patterns.mega):
+        elif any(h in str(dl).lower() for h in mega.url_patterns):
             logging.debug("Downloading from mega.nz!")
             mega.get_link(dl)
-        elif any(h in str(dl).lower() for h in url_patterns.onedrive):
+        elif any(h in str(dl).lower() for h in onedrive.url_patterns):
             logging.debug("Downloading from OneDrive!")
             onedrive.get_link(dl)
-        elif any(h in str(dl).lower() for h in url_patterns.yandisk):
+        elif any(h in str(dl).lower() for h in yandisk.url_patterns):
             logging.debug("Downloading from Yandisk!")
             yandisk.get_link(dl)
         else:  # is web page
