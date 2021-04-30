@@ -19,7 +19,7 @@ pylint==2.4.4
 pyunpack==0.1.2
 rarfile==3.1
 requests==2.21.0
-rsa==4.0
+rsa==4.7
 Send2Trash==1.5.0
 Send2Trash3k==1.2.0
 six==1.13.0
